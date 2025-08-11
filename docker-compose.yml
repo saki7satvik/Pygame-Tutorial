@@ -1,0 +1,13 @@
+services:
+  pygame-simulator:
+    build: .
+    container_name: spaceship-simulator
+    environment:
+      - DISPLAY=${DISPLAY}
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix:rw
+      - ${HOME}/.Xauthority:/home/gameuser/.Xauthority:rw
+    network_mode: host
+    stdin_open: true
+    tty: true
+    restart: "no"
