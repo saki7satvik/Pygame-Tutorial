@@ -2,6 +2,16 @@
 
 This is a Docker containerized version of the Pygame spaceship simulator with realistic remote-control-style movement.
 
+## 🌍 Cross-Platform Compatibility
+
+This Docker setup ensures your game runs identically on **any operating system**:
+
+- **🐧 Linux**: Native Docker support with X11 forwarding
+- **🍎 macOS**: Uses Docker Desktop + XQuartz for GUI
+- **🪟 Windows**: Uses Docker Desktop + VcXsrv for GUI
+
+**How it works**: Docker creates a consistent Linux environment inside a container, regardless of your host OS. The game always runs in the same environment with the same dependencies!
+
 ## Prerequisites
 
 - Docker installed on your system
@@ -25,7 +35,7 @@ This is a Docker containerized version of the Pygame spaceship simulator with re
    xhost +local:docker
    
    # Run the application
-   docker-compose up --build
+   docker compose up --build
    
    # When done, restore X11 security
    xhost -local:docker
@@ -43,7 +53,7 @@ This is a Docker containerized version of the Pygame spaceship simulator with re
    xhost + $(ipconfig getifaddr en0)
    
    # Run the application
-   docker-compose up --build
+   docker compose up --build
    ```
 
 3. **For Windows with VcXsrv:**
@@ -55,7 +65,7 @@ This is a Docker containerized version of the Pygame spaceship simulator with re
    set DISPLAY=host.docker.internal:0
    
    # Run the application
-   docker-compose up --build
+   docker compose up --build
    ```
 
 ### Option 2: Using Docker directly
@@ -115,7 +125,25 @@ docker run --rm -it \
 
 To modify the game:
 1. Edit `main.py` 
-2. Rebuild the container: `docker-compose up --build`
+2. Rebuild the container: `docker compose up --build`
+
+## 🔧 How Cross-Platform Support Works
+
+### **Docker Container Consistency**
+- **Same Linux Environment**: Every OS runs the same Debian-based container
+- **Identical Dependencies**: SDL2, Python, Pygame versions are always the same
+- **Consistent Behavior**: Game logic, physics, rendering work identically
+
+### **GUI Forwarding by OS**
+- **Linux**: Native X11 socket sharing (`/tmp/.X11-unix`)
+- **macOS**: XQuartz provides X11 server, Docker connects via network
+- **Windows**: VcXsrv provides X11 server, Docker uses `host.docker.internal`
+
+### **Why This Approach Works**
+1. **Isolation**: Container isolates your game from host OS differences
+2. **Standardization**: Same runtime environment regardless of host
+3. **Portability**: One `docker-compose.yml` works everywhere
+4. **Dependencies**: No need to install Pygame/SDL2 on each machine
 
 ## Security Note
 
